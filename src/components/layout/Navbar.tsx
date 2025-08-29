@@ -1,5 +1,3 @@
-import Logo from "@/components/ui/logo";
-
 import UserMenu from "@/components/ui/user-menu";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +12,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ModeToggler } from "./ModeToggler";
+import { Link } from "react-router";
+import Logo from "../ui/logo";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -23,7 +23,7 @@ const navigationLinks = [
   { href: "/about", label: "About", role: "PUBLIC" },
 ];
 
-const user = true;
+const user = false;
 
 export default function Navbar() {
   return (
@@ -72,8 +72,8 @@ export default function Navbar() {
                   <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                     {navigationLinks.map((link, index) => (
                       <NavigationMenuItem key={index} className="w-full">
-                        <NavigationMenuLink href={link.href} className="py-1.5">
-                          {link.label}
+                        <NavigationMenuLink className="py-1.5">
+                          <Link to={link.href}>{link.label}</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     ))}
@@ -91,11 +91,8 @@ export default function Navbar() {
                 <NavigationMenuList className="gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index}>
-                      <NavigationMenuLink
-                        href={link.href}
-                        className="hover:text-primary py-1.5 font-medium"
-                      >
-                        {link.label}
+                      <NavigationMenuLink className="hover:text-primary py-1.5 font-medium">
+                        <Link to={link.href}>{link.label}</Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -104,7 +101,8 @@ export default function Navbar() {
             </div>
           </div>
           {/* Right side */}
-          <div>
+          <div className="flex items-center gap-4">
+            <ModeToggler />
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
@@ -112,14 +110,15 @@ export default function Navbar() {
                   {/* <InfoMenu /> */}
                   {/* Notification */}
                   {/* <NotificationMenu /> */}
-                  <ModeToggler />
                 </div>
                 {/* User menu */}
                 <UserMenu />
               </div>
             ) : (
               <div>
-                <Button className="cursor-pointer">Login</Button>
+                <Button className="cursor-pointer">
+                  <Link to={"/login"}>Login</Link>
+                </Button>
               </div>
             )}
           </div>
