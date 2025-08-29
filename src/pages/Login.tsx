@@ -1,7 +1,11 @@
+import { LoginForm } from "@/components/modules/Authentication/LoginForm";
+
 export default function Login() {
   return (
-    <div>
-      <h1>This is Login Component</h1>
+    <div className="flex justify-center items-center mt-20 ">
+      <div>
+        <LoginForm />
+      </div>
     </div>
   );
 }

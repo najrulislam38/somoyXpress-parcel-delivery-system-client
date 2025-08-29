@@ -1,6 +1,6 @@
 import { useTheme } from "@/hooks/useTheme";
-import logo1 from "./../../assets/images/logo-1.png";
-import logo2 from "./../../assets/images/logo-2.png";
+import logo1 from "./../../assets/images/logo1.png";
+import logo2 from "./../../assets/images/logo2.png";
 
 export default function Logo() {
   const { theme } = useTheme();
