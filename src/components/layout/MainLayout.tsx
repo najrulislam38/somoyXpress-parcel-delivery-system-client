@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 interface IPros {
   children: ReactNode;
@@ -7,9 +8,10 @@ interface IPros {
 
 export default function MainLayout({ children }: IPros) {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div>{children}</div>
+      <div className="grow-1">{children}</div>
+      <Footer />
     </div>
   );
 }
