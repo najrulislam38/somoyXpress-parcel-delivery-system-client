@@ -1,11 +1,5 @@
-import {
-  BoltIcon,
-  BookOpenIcon,
-  Layers2Icon,
-  LogOutIcon,
-  PinIcon,
-  UserPenIcon,
-} from "lucide-react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { BoltIcon, LogOutIcon, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -18,25 +12,42 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { authApi, useLogoutMutation } from "@/redux/features/auth/auth.api";
+import { useDispatch } from "react-redux";
 
-export default function UserMenu() {
+export default function UserMenu({ user }: any) {
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    logout(undefined)
+      .unwrap()
+      .then(() => {
+        dispatch(authApi.util.resetApiState());
+      })
+      .catch((err) => {
+        console.error("Logout failed", err);
+      });
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
             <AvatarImage src="./avatar.jpg" alt="Profile image" />
-            <AvatarFallback>KK</AvatarFallback>
+            <AvatarFallback>
+              {user?.data?.picture ? user?.data?.picture : <User />}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64" align="end">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="text-red-500 truncate text-sm font-medium">
-            Keith Kennedy
+            {user?.data?.name}
           </span>
           <span className="text-muted-foreground truncate text-xs font-normal">
-            k.kennedy@originui.com
+            {user?.data?.email}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -46,27 +57,11 @@ export default function UserMenu() {
             <span>Option 1</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
+            <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
             <span>Option 2</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 3</span>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 4</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 5</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleLogout()}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
           <span>Logout</span>
         </DropdownMenuItem>

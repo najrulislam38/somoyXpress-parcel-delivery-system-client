@@ -3,6 +3,7 @@ import About from "@/pages/About";
 import ContactUs from "@/pages/ContactUs";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 import Services from "@/pages/Services";
 import { createBrowserRouter } from "react-router";
 
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/register",
-        Component: Home,
+        Component: Register,
       },
     ],
   },

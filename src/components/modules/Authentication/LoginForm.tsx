@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -33,6 +33,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   const [login] = useLoginMutation();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -51,9 +52,10 @@ export function LoginForm({
 
     try {
       const result = await login(userInfo).unwrap();
-      console.log(result);
+      // console.log(result);
       if (result.success) {
         toast.success("Login successful.");
+        navigate("/");
       }
     } catch (error: any) {
       console.log(error);
@@ -148,7 +150,10 @@ export function LoginForm({
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <Link to={"/register"} className="underline underline-offset-4">
+        <Link
+          to={"/register"}
+          className="underline underline-offset-4 text-primary"
+        >
           Sign up
         </Link>
       </div>

@@ -14,6 +14,8 @@ import {
 import { ModeToggler } from "./ModeToggler";
 import { Link } from "react-router";
 import Logo from "../ui/logo";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import React from "react";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -23,9 +25,11 @@ const navigationLinks = [
   { href: "/about", label: "About", role: "PUBLIC" },
 ];
 
-const user = false;
-
 export default function Navbar() {
+  const { data: user } = useUserInfoQuery(undefined);
+
+  console.log("userInfo", user);
+
   return (
     <header className="border-b px-4 md:px-6">
       <div className="container mx-auto">
@@ -71,11 +75,28 @@ export default function Navbar() {
                 <NavigationMenu className="max-w-none *:w-full">
                   <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                     {navigationLinks.map((link, index) => (
-                      <NavigationMenuItem key={index} className="w-full">
-                        <NavigationMenuLink asChild className="py-1.5">
-                          <Link to={link.href}>{link.label}</Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
+                      <React.Fragment key={index}>
+                        {link.role === "PUBLIC" && (
+                          <NavigationMenuItem>
+                            <NavigationMenuLink
+                              asChild
+                              className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                            >
+                              <Link to={link.href}>{link.label}</Link>
+                            </NavigationMenuLink>
+                          </NavigationMenuItem>
+                        )}
+                        {link.role === user?.data?.role && (
+                          <NavigationMenuItem key={index}>
+                            <NavigationMenuLink
+                              asChild
+                              className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                            >
+                              <Link to={link.href}>{link.label}</Link>
+                            </NavigationMenuLink>
+                          </NavigationMenuItem>
+                        )}
+                      </React.Fragment>
                     ))}
                   </NavigationMenuList>
                 </NavigationMenu>
@@ -90,14 +111,28 @@ export default function Navbar() {
               <NavigationMenu className="max-md:hidden">
                 <NavigationMenuList className="gap-2">
                   {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index}>
-                      <NavigationMenuLink
-                        asChild
-                        className="hover:text-primary py-1.5 font-medium"
-                      >
-                        <Link to={link.href}>{link.label}</Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
+                    <React.Fragment key={index}>
+                      {link.role === "PUBLIC" && (
+                        <NavigationMenuItem>
+                          <NavigationMenuLink
+                            asChild
+                            className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )}
+                      {link.role === user?.data?.role && (
+                        <NavigationMenuItem key={index}>
+                          <NavigationMenuLink
+                            asChild
+                            className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )}
+                    </React.Fragment>
                   ))}
                 </NavigationMenuList>
               </NavigationMenu>
@@ -106,7 +141,7 @@ export default function Navbar() {
           {/* Right side */}
           <div className="flex items-center gap-4">
             <ModeToggler />
-            {user ? (
+            {user?.data?.email ? (
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   {/* Info menu */}
@@ -115,7 +150,7 @@ export default function Navbar() {
                   {/* <NotificationMenu /> */}
                 </div>
                 {/* User menu */}
-                <UserMenu />
+                <UserMenu user={user} />
               </div>
             ) : (
               <div>
