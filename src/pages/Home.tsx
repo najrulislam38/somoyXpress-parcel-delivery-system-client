@@ -1,3 +1,4 @@
+import BusinessPartners from "@/components/modules/Home/BusinessPartners";
 import FAQSection from "@/components/modules/Home/FAQSection";
 import HeroSection from "@/components/modules/Home/HeroSection";
 import OurServices from "@/components/modules/Home/OurServices";
@@ -11,6 +12,7 @@ export default function Home() {
         <Stay />
       </div>
       <OurServices />
+      <BusinessPartners />
       <FAQSection />
     </div>
   );

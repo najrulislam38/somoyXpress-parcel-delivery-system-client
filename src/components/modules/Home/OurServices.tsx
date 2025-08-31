@@ -1,4 +1,4 @@
-import Title from "@/hooks/Title";
+import Title from "@/hooks/Header";
 import service1 from "./../../../assets/icons/service-1.svg";
 import service2 from "./../../../assets/icons/service-2.svg";
 import service3 from "./../../../assets/icons/service-3.svg";

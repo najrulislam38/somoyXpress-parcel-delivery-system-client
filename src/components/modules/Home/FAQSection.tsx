@@ -1,4 +1,4 @@
-import Title from "@/hooks/Title";
+import Title from "@/hooks/Header";
 
 export default function FAQSection() {
   return (
