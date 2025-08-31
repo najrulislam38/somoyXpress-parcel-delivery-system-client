@@ -11,7 +11,7 @@ export default function Footer() {
             </div>
 
             <div className="mt-6 max-w-md text-center leading-relaxed text-gray-500 dark:text-white  sm:max-w-xs sm:text-left text-sm">
-              <h5> House# 12, Rd No. 16, Bosundhara, Dhaka</h5>
+              <h5> House# 12, 123 Dhaka Street, Gulshan-1 Dhaka, Bangladesh</h5>
               <p>E-mail: info@somoyxpress.com.bd </p>
               <p>Hotline: 0969444466415</p>
             </div>
@@ -305,7 +305,7 @@ export default function Footer() {
                   </svg>
 
                   <address className="-mt-0.5 flex-1  not-italic">
-                    213 Bashundhara, Dhaka, Bangladesh
+                    123 Dhaka Street, Gulshan-1 Dhaka, Bangladesh
                   </address>
                 </li>
               </ul>
