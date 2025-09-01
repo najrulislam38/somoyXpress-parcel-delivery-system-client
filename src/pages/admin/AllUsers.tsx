@@ -33,13 +33,19 @@ import type { IUser } from "@/types";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-export default function AllUsers() {
+interface PostProps {
+  loading: boolean;
+}
+
+export default function AllUsers({ loading }: PostProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(10);
   const [roleFilter, setRoleFilter] = useState<string | undefined>(undefined);
 
-  const { data } = useAllUsersQuery({
+  const { data, isLoading } = useAllUsersQuery({
     page: currentPage,
     limit,
     role: roleFilter,
@@ -64,6 +70,10 @@ export default function AllUsers() {
       console.log(error);
     }
   };
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
 
   return (
     <>
@@ -104,59 +114,76 @@ export default function AllUsers() {
           </div>
         ) : (
           <div className="border border-muted rounded-md">
-            <Table className="text-center">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-center">SL No.</TableHead>
-                  <TableHead className="text-center">Name</TableHead>
-                  <TableHead className="text-center">Email</TableHead>
-                  <TableHead className="text-center">Role</TableHead>
-                  <TableHead className="text-center">Phone</TableHead>
-                  <TableHead className="text-center">Address</TableHead>
-                  <TableHead className="text-center">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.data?.map((item: Partial<IUser>, index: number) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">
-                      {(currentPage - 1) * limit + (index + 1)}
-                    </TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.email}</TableCell>
-                    <TableCell>{item.role}</TableCell>
-                    <TableCell>{item.phone}</TableCell>
-                    <TableCell>
-                      {item.address ? (
-                        item.address
-                      ) : (
-                        <span className="text-chart-3">Unavailable</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className=" flex items-center justify-center gap-3 ">
-                        <UpdateUserInfo userId={item?._id as string} />
-
-                        {item?.isDeleted ? (
-                          <span>Deleted</span>
+            {loading ? (
+              <Skeleton />
+            ) : (
+              <Table className="text-center">
+                <TableHeader>
+                  {" "}
+                  {loading ? (
+                    <Skeleton />
+                  ) : (
+                    <TableRow>
+                      <TableHead className="text-center">SL No.</TableHead>
+                      <TableHead className="text-center">Name</TableHead>
+                      <TableHead className="text-center">Email</TableHead>
+                      <TableHead className="text-center">Role</TableHead>
+                      <TableHead className="text-center">Phone</TableHead>
+                      <TableHead className="text-center">Address</TableHead>
+                      <TableHead className="text-center">Action</TableHead>
+                    </TableRow>
+                  )}
+                </TableHeader>
+                <TableBody>
+                  {data?.data?.map((item: Partial<IUser>, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell className="font-medium">
+                        {(currentPage - 1) * limit + (index + 1)}
+                      </TableCell>
+                      <TableCell>
+                        {loading ? <Skeleton /> : item.name}
+                      </TableCell>
+                      <TableCell>
+                        {loading ? <Skeleton /> : item.email}
+                      </TableCell>
+                      <TableCell>
+                        {loading ? <Skeleton /> : item.role}
+                      </TableCell>
+                      <TableCell>
+                        {loading ? <Skeleton /> : item.phone}
+                      </TableCell>
+                      <TableCell>
+                        {item.address ? (
+                          item.address
                         ) : (
-                          <DeleteConfirmation
-                            onConfirm={() =>
-                              item._id && handleConfirm(item._id)
-                            }
-                          >
-                            <Button className="bg-accent hover:bg-chart-3 duration-300 transition ">
-                              <Trash2 className="text-red-700 cursor-pointer " />
-                            </Button>
-                          </DeleteConfirmation>
+                          <span className="text-chart-3">Unavailable</span>
                         )}
-                      </div>
-                    </TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                      </TableCell>
+                      <TableCell>
+                        <div className=" flex items-center justify-center gap-3 ">
+                          <UpdateUserInfo userId={item?._id as string} />
+
+                          {item?.isDeleted ? (
+                            <span>Deleted</span>
+                          ) : (
+                            <DeleteConfirmation
+                              onConfirm={() =>
+                                item._id && handleConfirm(item._id)
+                              }
+                            >
+                              <Button className="bg-accent hover:bg-chart-3 duration-300 transition ">
+                                <Trash2 className="text-red-700 cursor-pointer " />
+                              </Button>
+                            </DeleteConfirmation>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </div>
         )}
         {totalPage > 1 && (
