@@ -10,7 +10,7 @@ export default function OurServices() {
       <Title title={"Our Services"} />
       <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-6 md:mt-10">
         <div className="flex flex-col items-center gap-5">
-          <div className="w-full h-[300px] flex items-center justify-center bg-accent p-5 border  shadow-xs group  rounded-lg">
+          <div className="w-full h-[300px] flex items-center justify-center bg-accent p-12 border  shadow-xs group  rounded-lg">
             <img
               src={service1}
               alt=""
@@ -22,7 +22,7 @@ export default function OurServices() {
           </h3>
         </div>
         <div className="flex flex-col items-center gap-5">
-          <div className="w-full h-[300px] flex items-center justify-center bg-accent p-5 border  shadow-xs group  rounded-lg">
+          <div className="w-full h-[300px] flex items-center justify-center bg-accent p-12 border  shadow-xs group  rounded-lg">
             <img
               src={service2}
               alt=""
@@ -32,7 +32,7 @@ export default function OurServices() {
           <h3 className="text-lg  md:text-xl font-medium">Pick and Drop</h3>
         </div>
         <div className="flex flex-col items-center gap-5">
-          <div className="w-fit h-[300px] flex items-center justify-center bg-accent p-5 border  shadow-xs group  rounded-lg">
+          <div className="w-fit h-[300px] flex items-center justify-center bg-accent p-12 border  shadow-xs group  rounded-lg">
             <img
               src={service3}
               alt=""
@@ -42,7 +42,7 @@ export default function OurServices() {
           <h3 className="text-lg  md:text-xl font-medium">Packing</h3>
         </div>
         <div className="flex flex-col items-center gap-5">
-          <div className="w-fit h-[300px] flex items-center justify-center bg-accent p-5 border  shadow-xs group  rounded-lg">
+          <div className="w-fit h-[300px] flex items-center justify-center bg-accent p-12 border  shadow-xs group  rounded-lg">
             <img
               src={service4}
               alt=""

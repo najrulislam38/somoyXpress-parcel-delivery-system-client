@@ -16,22 +16,25 @@ import { Link } from "react-router";
 import Logo from "../ui/logo";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import React from "react";
+import { role } from "@/constants/role";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
-  { href: "/services", label: "Services", role: "PUBLIC" },
+  // { href: "/services", label: "Services", role: "PUBLIC" },
   { href: "/contact-us", label: "Contact Us", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/admin", label: "dashboard", role: role.admin },
+  { href: "/admin", label: "dashboard", role: role.superAdmin },
+  { href: "/sender", label: "dashboard", role: role.sender },
+  { href: "/user", label: "dashboard", role: role.receiver },
 ];
 
 export default function Navbar() {
   const { data: user } = useUserInfoQuery(undefined);
 
-  console.log("userInfo", user);
-
   return (
-    <header className="border-b px-4 md:px-6">
+    <header className=" w-full bg-background fixed top-0 border-b px-4 z-10 md:px-6">
       <div className="container mx-auto">
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Left side */}

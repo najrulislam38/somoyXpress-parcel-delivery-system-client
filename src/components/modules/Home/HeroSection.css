@@ -1,9 +1,9 @@
 .banner-image{
     width: 100%;
     background-color: #1E93AB;
-     border-top-left-radius: 50%;   /* Top Left */
-  border-top-right-radius: 0px;   /* Top Right */
-  border-bottom-right-radius: 50%; /* Bottom Right */
+     border-top-left-radius: 50%;   
+  border-top-right-radius: 0px;  
+  border-bottom-right-radius: 50%; 
   border-bottom-left-radius: 0px;
     
 }

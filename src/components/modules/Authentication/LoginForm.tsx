@@ -71,13 +71,16 @@ export function LoginForm({
 
   return (
     <div
-      className={cn(" max-w-[500px] mx-auto flex flex-col gap-6", className)}
+      className={cn(
+        " max-w-[500px] mx-auto flex flex-col gap-6 mt-10 md:mt-20",
+        className
+      )}
     >
       <div className="flex flex-col items-center gap-2 text-center">
         <div className="w-16 bg-chart-2 rounded-full p-3">
           <img src={icon} alt="" className="w-full" loading="lazy" />
         </div>
-        <h1 className="text-2xl font-bold">Sender Login</h1>
+        <h1 className="text-2xl font-bold mt-4">Merchant Login</h1>
         <p className="text-muted-foreground text-sm text-balance">
           Enter your email below to login to your account
         </p>

@@ -13,7 +13,7 @@ export default function GetInTech() {
         {/* Address */}
         <div className="bg-card shadow-lg rounded-2xl p-6 border hover:shadow-2xl transition">
           <h3 className="text-xl font-semibold text-foreground mb-3">
-            📍 Our Office
+            🏠 Our Office
           </h3>
           <p className="text-muted-foreground">
             123 Dhaka Street, Gulshan-1 <br /> Dhaka, Bangladesh

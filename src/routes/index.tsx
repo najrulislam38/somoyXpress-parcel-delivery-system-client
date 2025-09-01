@@ -1,11 +1,17 @@
 import App from "@/App";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { role } from "@/constants/role";
 import About from "@/pages/About";
 import ContactUs from "@/pages/ContactUs";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
-import Services from "@/pages/Services";
-import { createBrowserRouter } from "react-router";
+import type { TRole } from "@/types";
+import { generateRoutes } from "@/utils/generateRoutes";
+import { withAuth } from "@/utils/withAuth";
+// import Services from "@/pages/Services";
+import { createBrowserRouter, Navigate } from "react-router";
+import { adminSidebarItems } from "./adminSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -16,10 +22,10 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
-      {
-        path: "/services",
-        Component: Services,
-      },
+      // {
+      //   path: "/services",
+      //   Component: Services,
+      // },
       {
         path: "/contact-us",
         Component: ContactUs,
@@ -28,14 +34,32 @@ export const router = createBrowserRouter([
         path: "/about",
         Component: About,
       },
-      {
-        path: "/login",
-        Component: Login,
-      },
-      {
-        path: "/register",
-        Component: Register,
-      },
     ],
+  },
+  {
+    Component: withAuth(
+      DashboardLayout,
+      (role.superAdmin || role.admin) as TRole
+    ),
+    path: "/admin",
+    children: [
+      {
+        index: true,
+        element: <Navigate to={"/admin/analytics"} />,
+      },
+      ...generateRoutes(adminSidebarItems),
+    ],
+  },
+  {
+    path: "/login",
+    Component: Login,
+  },
+  {
+    path: "/register",
+    Component: Register,
+  },
+  {
+    path: "/unauthorized",
+    Component: Register,
   },
 ]);
