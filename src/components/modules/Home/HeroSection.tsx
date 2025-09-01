@@ -8,7 +8,7 @@ import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 export default function HeroSection() {
   const { data } = useUserInfoQuery(undefined);
   return (
-    <div className="bg-accent py-20 lg:py-28">
+    <div className="bg-accent py-20 lg:py-28 min-h-screen">
       <div className="container mx-auto ">
         <div className=" w-full lg:flex items-center  justify-between gap-10 px-6">
           <div className="w-full  lg:w-2/5 ">
