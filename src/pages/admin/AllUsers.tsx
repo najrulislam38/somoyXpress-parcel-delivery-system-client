@@ -35,6 +35,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { UserTableSkeleton } from "@/components/Loader";
 
 interface PostProps {
   loading: boolean;
@@ -72,7 +73,12 @@ export default function AllUsers({ loading }: PostProps) {
   };
 
   if (isLoading) {
-    return <Skeleton />;
+    return (
+      <div className="w-full mx-auto">
+        <h3 className="text-xl font-semibold mb-4">All Users</h3>
+        <UserTableSkeleton rows={10} />
+      </div>
+    );
   }
 
   return (
@@ -108,7 +114,6 @@ export default function AllUsers({ loading }: PostProps) {
         {data?.data?.length < 1 ? (
           <div>
             <h2 className="text-xl md:text-2xl font-medium text-center">
-              {" "}
               There are don't have any user
             </h2>
           </div>
@@ -119,7 +124,6 @@ export default function AllUsers({ loading }: PostProps) {
             ) : (
               <Table className="text-center">
                 <TableHeader>
-                  {" "}
                   {loading ? (
                     <Skeleton />
                   ) : (

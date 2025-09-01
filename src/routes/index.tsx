@@ -50,6 +50,20 @@ export const router = createBrowserRouter([
       ...generateRoutes(adminSidebarItems),
     ],
   },
+  // {
+  //   Component: withAuth(
+  //     DashboardLayout,
+  //     (role.sender || role.superAdmin || role.admin) as TRole
+  //   ),
+  //   path: "/sender",
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <Navigate to={"/sender/analytics"} />,
+  //     },
+  //     ...generateRoutes(adminSidebarItems),
+  //   ],
+  // },
   {
     path: "/login",
     Component: Login,

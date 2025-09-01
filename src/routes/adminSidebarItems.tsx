@@ -1,3 +1,5 @@
+import ParcelDetails from "@/components/modules/Parcel/ParcelDetails";
+import AllParcel from "@/pages/Parcel/AllParcel";
 import AllUsers from "@/pages/admin/AllUsers";
 import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
@@ -16,7 +18,16 @@ export const adminSidebarItems: ISidebarItem[] = [
       {
         title: "All User",
         url: "/admin/all-users",
-        component: AllUsers,
+        component: () => <AllUsers loading={false} />,
+      },
+      {
+        title: "All Parcel",
+        url: "/admin/all-parcel",
+        component: () => <AllParcel />,
+      },
+      {
+        url: "/admin/parcel/:id",
+        component: () => <ParcelDetails />,
       },
     ],
   },
