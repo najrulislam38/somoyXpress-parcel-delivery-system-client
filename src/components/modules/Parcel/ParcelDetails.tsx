@@ -7,12 +7,9 @@ import "react-loading-skeleton/dist/skeleton.css";
 export default function ParcelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log(id);
 
   const { data, isLoading, isError } = useGetParcelDetailsQuery(id as string);
   const parcel = data?.data;
-
-  console.log(parcel);
 
   if (isLoading)
     return (
@@ -60,7 +57,6 @@ export default function ParcelDetails() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
-      {/* Back button */}
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary mb-6"
@@ -71,7 +67,6 @@ export default function ParcelDetails() {
 
       {/* Card */}
       <div className="border border-gray-200 rounded-2xl shadow-sm bg-white p-6 space-y-6">
-        {/* Header */}
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Package className="text-primary" /> {parcel.trackingId}
@@ -91,7 +86,6 @@ export default function ParcelDetails() {
           </span>
         </div>
 
-        {/* Info Grid */}
         <div className="grid md:grid-cols-2 gap-6 text-gray-700">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold flex items-center gap-2">

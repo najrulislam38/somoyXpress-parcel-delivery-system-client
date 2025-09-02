@@ -28,7 +28,20 @@ export const adminSidebarItems: ISidebarItem[] = [
       {
         url: "/admin/parcel/:id",
         component: () => <ParcelDetails />,
+        hidden: true,
       },
     ],
   },
 ];
+
+// export const adminRoutes = [
+//   { path: "/admin/analytics", element: <Analytics /> },
+//   { path: "/admin/all-users", element: <AllUsers loading={false} /> },
+//   { path: "/admin/all-parcel", element: <AllParcel /> },
+//   { path: "/admin/parcel/:id", element: <ParcelDetails /> }, // hidden (not in sidebar)
+// ];
+
+// export const adminRoutes = [
+//   ...adminSidebarItems.flatMap((section) => section.items),
+//   { url: "/admin/parcel/:id", component: () => <ParcelDetails /> }, // hidden route
+// ];

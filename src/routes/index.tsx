@@ -12,6 +12,7 @@ import { withAuth } from "@/utils/withAuth";
 // import Services from "@/pages/Services";
 import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
+import { senderSidebarItems } from "./senderSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -37,10 +38,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: withAuth(
-      DashboardLayout,
-      (role.superAdmin || role.admin) as TRole
-    ),
+    Component: withAuth(DashboardLayout, [
+      role.superAdmin,
+      role.admin,
+    ] as TRole[]),
     path: "/admin",
     children: [
       {
@@ -50,20 +51,22 @@ export const router = createBrowserRouter([
       ...generateRoutes(adminSidebarItems),
     ],
   },
-  // {
-  //   Component: withAuth(
-  //     DashboardLayout,
-  //     (role.sender || role.superAdmin || role.admin) as TRole
-  //   ),
-  //   path: "/sender",
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <Navigate to={"/sender/analytics"} />,
-  //     },
-  //     ...generateRoutes(adminSidebarItems),
-  //   ],
-  // },
+  {
+    Component: withAuth(DashboardLayout, [
+      role.sender,
+      role.superAdmin,
+      role.admin,
+    ] as TRole[]),
+    path: "/sender",
+    children: [
+      {
+        index: true,
+        element: <Navigate to={"/sender/analytics"} />,
+      },
+      ...generateRoutes(senderSidebarItems),
+    ],
+  },
+
   {
     path: "/login",
     Component: Login,

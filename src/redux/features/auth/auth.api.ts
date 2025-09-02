@@ -54,7 +54,7 @@ export const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["USER"],
     }),
 
-    allUsers: builder.query({
+    getAllUsers: builder.query({
       query: (params) => ({
         url: "/users",
         method: "GET",
@@ -70,7 +70,7 @@ export const {
   useRegisterMutation,
   useUserInfoQuery,
   useSingleUserInfoQuery,
-  useAllUsersQuery,
+  useGetAllUsersQuery,
   useLogoutMutation,
   useUpdateUserInfoMutation,
   useDeleteUserMutation,

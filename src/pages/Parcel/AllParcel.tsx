@@ -70,7 +70,7 @@ export default function AllParcel() {
                 key={idx}
                 className="border border-gray-200 rounded-xl shadow-sm p-5 bg-white"
               >
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex flex-wrap justify-between items-center mb-2">
                   <Skeleton width={120} height={20} />
                   <Skeleton width={80} height={20} borderRadius={12} />
                 </div>
@@ -90,9 +90,9 @@ export default function AllParcel() {
           : filteredParcels?.map((parcel: Partial<IParcel>) => (
               <div
                 key={parcel.trackingId}
-                className="border border-gray-200 rounded-xl shadow-sm p-5 bg-white hover:shadow-lg transition"
+                className="border-s border-accent-foreground rounded-lg shadow-sm p-5 bg-accent hover:shadow-lg transition"
               >
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex flex-wrap justify-between items-center mb-2">
                   <h3 className="text-lg font-semibold truncate">
                     {parcel.trackingId}
                   </h3>
@@ -107,7 +107,7 @@ export default function AllParcel() {
                   </span>
                 </div>
 
-                <div className="text-sm text-gray-600 space-y-1">
+                <div className="text-sm text-gray-600 dark:text-foreground space-y-1">
                   <p>
                     <span className="font-medium">Sender:</span>{" "}
                     {typeof parcel?.sender === "object" &&

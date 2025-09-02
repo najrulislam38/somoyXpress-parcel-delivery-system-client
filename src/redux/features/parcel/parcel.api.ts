@@ -1,4 +1,5 @@
 import { baseApi } from "@/redux/baseApi";
+import type { IParcel } from "@/types";
 
 export const parcelApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,6 +11,14 @@ export const parcelApi = baseApi.injectEndpoints({
     //   providesTags: ["USER"],
     // }),
 
+    createParcel: builder.mutation({
+      query: (parcelInfo: Partial<IParcel>) => ({
+        url: "/parcels/create",
+        method: "POST",
+        data: parcelInfo,
+      }),
+      invalidatesTags: ["PARCEL"],
+    }),
     getAllParcel: builder.query({
       query: (params) => ({
         url: "/parcels",
@@ -28,4 +37,8 @@ export const parcelApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllParcelQuery, useGetParcelDetailsQuery } = parcelApi;
+export const {
+  useCreateParcelMutation,
+  useGetAllParcelQuery,
+  useGetParcelDetailsQuery,
+} = parcelApi;

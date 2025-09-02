@@ -1,4 +1,5 @@
-import Analytics from "@/pages/admin/Analytics";
+import CreateParcel from "@/pages/Parcel/CreateParcel";
+import SenderAnalytics from "@/pages/Sender/SenderAnalytics";
 import type { ISidebarItem } from "@/types";
 // import { lazy } from "react";
 
@@ -6,12 +7,17 @@ import type { ISidebarItem } from "@/types";
 
 export const senderSidebarItems: ISidebarItem[] = [
   {
-    title: "Dashboard",
+    title: "Sender Dashboard",
     items: [
       {
         title: "Analytics",
-        url: "/admin/analytics",
-        component: Analytics,
+        url: "/sender/analytics",
+        component: SenderAnalytics,
+      },
+      {
+        title: "Create Parcel",
+        url: "/sender/create-parcel",
+        component: CreateParcel,
       },
     ],
   },

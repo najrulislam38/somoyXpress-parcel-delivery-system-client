@@ -10,6 +10,7 @@ export interface ISidebarItem {
     title?: string;
     url: string;
     component: ComponentType;
+    hidden?: boolean;
   }[];
 }
 
@@ -86,9 +87,9 @@ export interface IParcel {
   deliveryFee: number;
   description?: string;
   currentStatus: ParcelStatus;
-  deliveryTypes: DeliveryType;
+  deliveryTypes: "Hub Delivery" | "Normal Delivery";
   statusLogs: IStatusLog[];
   isBlocked: boolean;
-  expectedDeliveryDate?: Date;
-  actualDeliveryDate?: Date;
+  expectedDeliveryDate?: string;
+  actualDeliveryDate?: string;
 }

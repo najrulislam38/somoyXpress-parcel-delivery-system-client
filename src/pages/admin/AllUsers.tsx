@@ -26,7 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  useAllUsersQuery,
+  useGetAllUsersQuery,
   useDeleteUserMutation,
 } from "@/redux/features/auth/auth.api";
 import type { IUser } from "@/types";
@@ -46,7 +46,7 @@ export default function AllUsers({ loading }: PostProps) {
   const [limit] = useState(10);
   const [roleFilter, setRoleFilter] = useState<string | undefined>(undefined);
 
-  const { data, isLoading } = useAllUsersQuery({
+  const { data, isLoading } = useGetAllUsersQuery({
     page: currentPage,
     limit,
     role: roleFilter,
