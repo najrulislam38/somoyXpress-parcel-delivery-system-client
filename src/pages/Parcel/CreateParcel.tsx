@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useGetAllUsersQuery } from "@/redux/features/auth/auth.api";
+
 import { UserRole, type IParcel } from "@/types";
 import { useCreateParcelMutation } from "@/redux/features/parcel/parcel.api";
 import { format, formatISO } from "date-fns";
@@ -33,6 +33,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
+import { useGetAllReceiverQuery } from "@/redux/features/user/user.api";
 const deliveryTypeOptions = [
   { value: "Normal Delivery", label: "Normal Delivery" },
   { value: "Hub Delivery", label: "Hub Delivery" },
@@ -66,7 +67,7 @@ const createParcelZodSchema = z.object({
 export default function CreateParcel() {
   const [createParcel, { isLoading }] = useCreateParcelMutation();
 
-  const { data: receiverRoleData } = useGetAllUsersQuery({
+  const { data: receiverRoleData } = useGetAllReceiverQuery({
     role: UserRole.RECEIVER,
   });
 

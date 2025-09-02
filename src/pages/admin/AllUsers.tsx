@@ -25,10 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  useGetAllUsersQuery,
-  useDeleteUserMutation,
-} from "@/redux/features/auth/auth.api";
+
 import type { IUser } from "@/types";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -36,6 +33,10 @@ import { toast } from "sonner";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { UserTableSkeleton } from "@/components/Loader";
+import {
+  useDeleteUserMutation,
+  useGetAllUsersQuery,
+} from "@/redux/features/user/user.api";
 
 interface PostProps {
   loading: boolean;

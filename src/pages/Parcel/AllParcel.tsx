@@ -2,13 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { useGetAllParcelQuery } from "@/redux/features/parcel/parcel.api";
-import type { IParcel, ParcelStatus } from "@/types";
+import { UserRole, type IParcel, type ParcelStatus } from "@/types";
 import { useState } from "react";
 import { Link } from "react-router";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 export default function AllParcel() {
+  const { data: user } = useUserInfoQuery(undefined);
   const { data, isLoading, isError } = useGetAllParcelQuery(undefined);
   const parcels = data?.data || [];
 
@@ -34,141 +36,159 @@ export default function AllParcel() {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-        <h2 className="text-2xl font-bold">
-          Total Parcels:{" "}
-          <span className="text-primary">
-            {isLoading ? <Skeleton width={30} /> : parcels.length}
-          </span>
-        </h2>
-
-        <div className="flex items-center gap-2">
-          <label className="font-medium">Filter by Status:</label>
-          <select
-            className="border border-gray-300 rounded-md px-3 py-1"
-            value={filterStatus}
-            onChange={(e) =>
-              setFilterStatus(e.target.value as ParcelStatus | "ALL")
-            }
-            disabled={isLoading}
-          >
-            <option value="ALL">All</option>
-            {Object.keys(statusColors).map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
+    <>
+      {parcels?.length < 1 ? (
+        <div>
+          <h1 className="text-xl md:text-2xl font-medium text-center">
+            No Parcel available
+          </h1>
         </div>
-      </div>
+      ) : (
+        <div className="p-6">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+            <h2 className="text-2xl font-bold">
+              Total Parcels:{" "}
+              <span className="text-primary">
+                {isLoading ? <Skeleton width={30} /> : parcels.length}
+              </span>
+            </h2>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, idx) => (
-              <div
-                key={idx}
-                className="border border-gray-200 rounded-xl shadow-sm p-5 bg-white"
+            <div className="flex items-center gap-2">
+              <label className="font-medium">Filter by Status:</label>
+              <select
+                className="border border-gray-300 dark:bg-accent dark:text-white rounded-md px-3 py-1"
+                value={filterStatus}
+                onChange={(e) =>
+                  setFilterStatus(e.target.value as ParcelStatus | "ALL")
+                }
+                disabled={isLoading}
               >
-                <div className="flex flex-wrap justify-between items-center mb-2">
-                  <Skeleton width={120} height={20} />
-                  <Skeleton width={80} height={20} borderRadius={12} />
-                </div>
-                <div className="space-y-2">
-                  <Skeleton height={15} />
-                  <Skeleton height={15} />
-                  <Skeleton height={15} />
-                  <Skeleton height={15} />
-                  <Skeleton height={15} />
-                </div>
-                <div className="mt-3 flex justify-between items-center">
-                  <Skeleton width={60} height={15} />
-                  <Skeleton width={80} height={32} />
-                </div>
-              </div>
-            ))
-          : filteredParcels?.map((parcel: Partial<IParcel>) => (
-              <div
-                key={parcel.trackingId}
-                className="border-s border-accent-foreground rounded-lg shadow-sm p-5 bg-accent hover:shadow-lg transition"
-              >
-                <div className="flex flex-wrap justify-between items-center mb-2">
-                  <h3 className="text-lg font-semibold truncate">
-                    {parcel.trackingId}
-                  </h3>
-                  <span
-                    className={`text-sm font-medium px-2 py-1 rounded-full ${
-                      parcel.currentStatus
-                        ? statusColors[parcel.currentStatus]
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {parcel.currentStatus}
-                  </span>
-                </div>
+                <option value="ALL">All</option>
+                {Object.keys(statusColors).map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-                <div className="text-sm text-gray-600 dark:text-foreground space-y-1">
-                  <p>
-                    <span className="font-medium">Sender:</span>{" "}
-                    {typeof parcel?.sender === "object" &&
-                    parcel?.sender !== null &&
-                    "name" in parcel.sender
-                      ? (parcel.sender as { name?: string }).name || "NA"
-                      : typeof parcel?.sender === "string"
-                      ? parcel.sender
-                      : "NA"}
-                  </p>
-                  <p>
-                    <span className="font-medium">Receiver:</span>{" "}
-                    {typeof parcel?.receiver === "object" &&
-                    parcel?.receiver !== null &&
-                    "name" in parcel.receiver
-                      ? (parcel.receiver as { name?: string }).name || "NA"
-                      : typeof parcel?.receiver === "string"
-                      ? parcel.receiver
-                      : "NA"}
-                  </p>
-                  <p>
-                    <span className="font-medium">Pickup:</span>{" "}
-                    {parcel.pickupAddress}
-                  </p>
-                  <p>
-                    <span className="font-medium">Delivery:</span>{" "}
-                    {parcel.deliveryAddress}
-                  </p>
-                  <p>
-                    <span className="font-medium">Weight:</span> {parcel.weight}{" "}
-                    kg
-                  </p>
-                  <p>
-                    <span className="font-medium">Amount:</span> $
-                    {parcel.amountCollect}
-                  </p>
-                  {parcel.expectedDeliveryDate && (
-                    <p>
-                      <span className="font-medium">Expected Delivery:</span>{" "}
-                      {new Date(
-                        parcel.expectedDeliveryDate
-                      ).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-
-                <div className="mt-3 flex justify-between items-center">
-                  <span
-                    className={`text-xs font-semibold ${
-                      parcel.isBlocked ? "text-red-600" : "text-green-600"
-                    }`}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {isLoading
+              ? Array.from({ length: 6 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="border border-gray-200 rounded-xl shadow-sm p-5 bg-white"
                   >
-                    {parcel.isBlocked ? "Blocked" : "Active"}
-                  </span>
-                  <Link to={parcel._id ? `/admin/parcel/${parcel._id}` : "#"}>
-                    <Button disabled={!parcel._id}>View Details</Button>
-                  </Link>
-                </div>
-              </div>
-            ))}
-      </div>
-    </div>
+                    <div className="flex flex-wrap justify-between items-center mb-2">
+                      <Skeleton width={120} height={20} />
+                      <Skeleton width={80} height={20} borderRadius={12} />
+                    </div>
+                    <div className="space-y-2">
+                      <Skeleton height={15} />
+                      <Skeleton height={15} />
+                      <Skeleton height={15} />
+                      <Skeleton height={15} />
+                      <Skeleton height={15} />
+                    </div>
+                    <div className="mt-3 flex justify-between items-center">
+                      <Skeleton width={60} height={15} />
+                      <Skeleton width={80} height={32} />
+                    </div>
+                  </div>
+                ))
+              : filteredParcels?.map((parcel: Partial<IParcel>) => (
+                  <div
+                    key={parcel.trackingId}
+                    className="border border-accent-foreground rounded-lg shadow-sm p-5 bg-accent hover:shadow-lg transition"
+                  >
+                    <div className="flex flex-wrap justify-between items-center mb-2">
+                      <h3 className="text-lg font-semibold truncate">
+                        {parcel.trackingId}
+                      </h3>
+                      <span
+                        className={`text-sm font-medium px-2 py-1 rounded-full ${
+                          parcel.currentStatus
+                            ? statusColors[parcel.currentStatus]
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {parcel.currentStatus}
+                      </span>
+                    </div>
+
+                    <div className="text-sm text-gray-600 dark:text-foreground space-y-1">
+                      <p>
+                        <span className="font-medium">Sender:</span>{" "}
+                        {typeof parcel?.sender === "object" &&
+                        parcel?.sender !== null &&
+                        "name" in parcel.sender
+                          ? (parcel.sender as { name?: string }).name || "NA"
+                          : typeof parcel?.sender === "string"
+                          ? parcel.sender
+                          : "NA"}
+                      </p>
+                      <p>
+                        <span className="font-medium">Receiver:</span>{" "}
+                        {typeof parcel?.receiver === "object" &&
+                        parcel?.receiver !== null &&
+                        "name" in parcel.receiver
+                          ? (parcel.receiver as { name?: string }).name || "NA"
+                          : typeof parcel?.receiver === "string"
+                          ? parcel.receiver
+                          : "NA"}
+                      </p>
+                      <p>
+                        <span className="font-medium">Pickup:</span>{" "}
+                        {parcel.pickupAddress}
+                      </p>
+                      <p>
+                        <span className="font-medium">Delivery:</span>{" "}
+                        {parcel.deliveryAddress}
+                      </p>
+                      <p>
+                        <span className="font-medium">Weight:</span>{" "}
+                        {parcel.weight} kg
+                      </p>
+                      <p>
+                        <span className="font-medium">Amount:</span> $
+                        {parcel.amountCollect}
+                      </p>
+                      {parcel.expectedDeliveryDate && (
+                        <p>
+                          <span className="font-medium">
+                            Expected Delivery:
+                          </span>{" "}
+                          {new Date(
+                            parcel.expectedDeliveryDate
+                          ).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="mt-3 flex justify-between items-center">
+                      <span
+                        className={`text-xs font-semibold ${
+                          parcel.isBlocked ? "text-red-600" : "text-green-600"
+                        }`}
+                      >
+                        {parcel.isBlocked ? "Blocked" : "Active"}
+                      </span>
+                      <Link
+                        to={
+                          user?.data?.role === UserRole.MERCHANT
+                            ? `/sender/parcel/${parcel._id}`
+                            : `/admin/parcel/${parcel._id}`
+                        }
+                      >
+                        <Button disabled={!parcel._id}>View Details</Button>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

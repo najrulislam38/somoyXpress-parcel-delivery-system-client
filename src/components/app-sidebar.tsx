@@ -13,9 +13,10 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Logo from "./ui/logo";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+
 import { getSidebarItems } from "@/utils/getSidebarItems";
 import { Link } from "react-router";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 // This is sample data.
 
@@ -42,13 +43,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item, index) => (
-                  <SidebarMenuItem key={index}>
-                    <SidebarMenuButton asChild>
-                      <Link to={item.url}>{item.title}</Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {item.items
+                  .filter((item) => !item.hidden)
+                  .map((item, index) => (
+                    <SidebarMenuItem key={index}>
+                      <SidebarMenuButton asChild>
+                        <Link to={item.url}>{item.title}</Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

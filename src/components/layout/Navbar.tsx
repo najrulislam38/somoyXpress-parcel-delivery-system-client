@@ -14,9 +14,10 @@ import {
 import { ModeToggler } from "./ModeToggler";
 import { Link } from "react-router";
 import Logo from "../ui/logo";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+
 import React from "react";
 import { role } from "@/constants/role";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [

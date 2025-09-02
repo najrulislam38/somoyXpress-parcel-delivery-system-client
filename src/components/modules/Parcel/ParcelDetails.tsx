@@ -66,7 +66,7 @@ export default function ParcelDetails() {
       </button>
 
       {/* Card */}
-      <div className="border border-gray-200 rounded-2xl shadow-sm bg-white p-6 space-y-6">
+      <div className="border border-gray-200 rounded-2xl shadow-sm bg-accent p-6 space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Package className="text-primary" /> {parcel.trackingId}
@@ -86,7 +86,7 @@ export default function ParcelDetails() {
           </span>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 text-gray-700">
+        <div className="grid md:grid-cols-2 gap-6 ">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold flex items-center gap-2">
               <User size={18} /> Sender Info
@@ -122,7 +122,7 @@ export default function ParcelDetails() {
         </div>
 
         {/* Parcel Info */}
-        <div className="border-t border-gray-200 pt-6 space-y-3">
+        <div className="border-t border-foreground  pt-6 space-y-3">
           <h3 className="text-lg font-semibold flex items-center gap-2">
             <Truck size={18} /> Parcel Info
           </h3>

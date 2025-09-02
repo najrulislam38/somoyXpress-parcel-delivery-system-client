@@ -28,7 +28,8 @@ import {
 import {
   useSingleUserInfoQuery,
   useUpdateUserInfoMutation,
-} from "@/redux/features/auth/auth.api";
+} from "@/redux/features/user/user.api";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
 import { Edit } from "lucide-react";

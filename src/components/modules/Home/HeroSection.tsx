@@ -3,7 +3,7 @@ import banner from "../../../assets/images/banner-image.png";
 import { LogIn } from "lucide-react";
 import { Link } from "react-router";
 import "./HeroSection.css";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 export default function HeroSection() {
   const { data } = useUserInfoQuery(undefined);
