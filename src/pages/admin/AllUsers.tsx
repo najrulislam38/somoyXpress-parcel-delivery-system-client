@@ -26,7 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import type { IUser } from "@/types";
+import { type IUser } from "@/types";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -45,6 +45,7 @@ interface PostProps {
 export default function AllUsers({ loading }: PostProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(10);
+
   const [roleFilter, setRoleFilter] = useState<string | undefined>(undefined);
 
   const { data, isLoading } = useGetAllUsersQuery({

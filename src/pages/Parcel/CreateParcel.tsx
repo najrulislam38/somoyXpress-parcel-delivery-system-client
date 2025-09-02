@@ -33,7 +33,11 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
-import { useGetAllReceiverQuery } from "@/redux/features/user/user.api";
+import {
+  useGetAllReceiverQuery,
+  useUserInfoQuery,
+} from "@/redux/features/user/user.api";
+import { useNavigate } from "react-router";
 const deliveryTypeOptions = [
   { value: "Normal Delivery", label: "Normal Delivery" },
   { value: "Hub Delivery", label: "Hub Delivery" },
@@ -65,8 +69,10 @@ const createParcelZodSchema = z.object({
 });
 
 export default function CreateParcel() {
+  const navigate = useNavigate();
   const [createParcel, { isLoading }] = useCreateParcelMutation();
 
+  const { data: user } = useUserInfoQuery(undefined);
   const { data: receiverRoleData } = useGetAllReceiverQuery({
     role: UserRole.RECEIVER,
   });
@@ -118,6 +124,11 @@ export default function CreateParcel() {
       if (res?.success) {
         toast.success("Parcel Created successfully", { id: toastId });
         form.reset();
+        navigate(
+          user?.data?.role === UserRole.MERCHANT
+            ? "/sender/all-parcel"
+            : "/admin/all-parcel"
+        );
       } else {
         toast.error("Parcel Created Failed", { id: toastId });
       }

@@ -1,15 +1,78 @@
-import { useGetParcelDetailsQuery } from "@/redux/features/parcel/parcel.api";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  useCancelParcelMutation,
+  useGetParcelDetailsQuery,
+  useUpdateParcelStatusMutation,
+} from "@/redux/features/parcel/parcel.api";
 import { ArrowLeft, Package, User, Truck } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Button } from "@/components/ui/button";
+import { CancelParcel } from "./CancelParcel";
+import { toast } from "sonner";
+import { ParcelStatusSelector } from "../Admin/ChangeStatus";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
+import { UserRole } from "@/types";
 
 export default function ParcelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [cancelParcel] = useCancelParcelMutation();
+  const [updateStatus] = useUpdateParcelStatusMutation();
+  const { data: user } = useUserInfoQuery(undefined);
 
   const { data, isLoading, isError } = useGetParcelDetailsQuery(id as string);
   const parcel = data?.data;
+
+  const handleCancel = async (id: string) => {
+    console.log(id);
+
+    const toastId = toast.loading("Parcel Cancelling");
+    try {
+      const res = await cancelParcel(id);
+
+      console.log(res);
+
+      if (res?.data?.success) {
+        console.log(res);
+        toast.success("Parcel Cancelled successfully", { id: toastId });
+      } else {
+        toast.error("Parcel Cancelled fail", { id: toastId });
+      }
+    } catch (error: any) {
+      // console.log(error);
+      toast.error(`Parcel Cancelled  Failed ${error.message}`, { id: toastId });
+    }
+  };
+
+  const handleStatusChange = async (newStatus: string) => {
+    if (!id) return;
+
+    const toastId = toast.loading("Updating status...");
+    try {
+      const res = await updateStatus({ id, status: newStatus }).unwrap();
+      console.log(res);
+
+      toast.success(`Status updated to ${res.data.currentStatus}`, {
+        id: toastId,
+      });
+    } catch (error: any) {
+      toast.error(`Failed to update status: ${error.message}`, { id: toastId });
+    }
+  };
+
+  if (isLoading) {
+    return <Skeleton height={200} />;
+  }
+
+  if (isError || !parcel) {
+    return (
+      <p className="text-center mt-10 text-red-600">
+        Failed to load parcel details!
+      </p>
+    );
+  }
 
   if (isLoading)
     return (
@@ -130,8 +193,12 @@ export default function ParcelDetails() {
             <span className="font-medium">Weight:</span> {parcel.weight} kg
           </p>
           <p>
-            <span className="font-medium">Amount Collect:</span> $
+            <span className="font-medium">Amount Collect:</span> ৳{" "}
             {parcel.amountCollect}
+          </p>
+          <p>
+            <span className="font-medium">Delivery Fee:</span> ৳{" "}
+            {parcel.deliveryFee}
           </p>
           <p>
             <span className="font-medium">Expected Delivery:</span>{" "}
@@ -139,6 +206,38 @@ export default function ParcelDetails() {
               ? new Date(parcel.expectedDeliveryDate).toLocaleDateString()
               : "After " + new Date().getDate() + " Days"}
           </p>
+          {parcel?.description && (
+            <p>
+              <span className="font-medium">Description: </span>{" "}
+              {parcel.description}
+            </p>
+          )}
+        </div>
+        <div className="my-10 flex justify-between items-center ">
+          {parcel?.currentStatus !== "CANCELLED" &&
+            parcel?.currentStatus !== "DELIVERED" &&
+            parcel?.currentStatus !== "IN_TRANSIT" &&
+            parcel?.currentStatus !== "RETURNED" &&
+            parcel?.currentStatus !== "DISPATCH" && (
+              <CancelParcel
+                onConfirm={() => parcel._id && handleCancel(parcel._id)}
+              >
+                <Button className="bg-chart-3 text-background hover:bg-chart-2 duration-300 transition ">
+                  Cancel Parcel
+                </Button>
+              </CancelParcel>
+            )}
+          <div>
+            {user?.data.role === UserRole.SUPER_ADMIN ||
+            user?.data?.role === UserRole.ADMIN ? (
+              <ParcelStatusSelector
+                currentStatus={parcel.currentStatus}
+                onStatusChange={handleStatusChange}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </div>
       </div>
     </div>
