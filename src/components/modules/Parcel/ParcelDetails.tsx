@@ -16,12 +16,14 @@ import { useUserInfoQuery } from "@/redux/features/user/user.api";
 import { UserRole } from "@/types";
 import UpdateStatus from "../Admin/UpdateStatus";
 import { DeleteParcel } from "./DeleteParcel";
+import { ConfirmParcel } from "./ConfirmParcel";
 
 export default function ParcelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [cancelParcel] = useCancelParcelMutation();
   const [deleteParcel] = useDeleteParcelMutation();
+  const [confirmParcel] = useDeleteParcelMutation();
   const [updateParcelStatus] = useUpdateParcelStatusMutation();
   const { data: user } = useUserInfoQuery(undefined);
 
@@ -44,6 +46,25 @@ export default function ParcelDetails() {
     } catch (error: any) {
       // console.log(error);
       toast.error(`Parcel Cancelled  Failed ${error.message}`, { id: toastId });
+    }
+  };
+
+  const handleConfirmParcel = async (id: string) => {
+    const toastId = toast.loading("Parcel Cancelling");
+    try {
+      const res = await confirmParcel(id);
+
+      console.log(res);
+
+      if (res?.data?.success) {
+        console.log(res);
+        toast.success("Parcel Received successfully", { id: toastId });
+      } else {
+        toast.error("Parcel Received fail", { id: toastId });
+      }
+    } catch (error: any) {
+      // console.log(error);
+      toast.error(`Parcel Received  Failed ${error.message}`, { id: toastId });
     }
   };
 
@@ -248,7 +269,8 @@ export default function ParcelDetails() {
         </div>
         <div className="my-10 flex justify-evenly items-center ">
           <div>
-            {parcel?.currentStatus !== "CANCELLED" &&
+            {user?.data?.role !== UserRole.RECEIVER &&
+              parcel?.currentStatus !== "CANCELLED" &&
               parcel?.currentStatus !== "DELIVERED" &&
               parcel?.currentStatus !== "IN_TRANSIT" &&
               parcel?.currentStatus !== "RETURNED" &&
@@ -263,7 +285,8 @@ export default function ParcelDetails() {
               )}
           </div>
           <div>
-            {parcel?.currentStatus !== "DISPATCH" &&
+            {user?.data?.role !== UserRole.RECEIVER &&
+              parcel?.currentStatus !== "DISPATCH" &&
               parcel?.currentStatus !== "IN_TRANSIT" &&
               parcel?.currentStatus !== "RETURNED" &&
               parcel?.currentStatus !== "DELIVERED" && (
@@ -289,6 +312,25 @@ export default function ParcelDetails() {
             ) : (
               ""
             )}
+          </div>
+
+          {/* Confirm Parcel for Receiver */}
+          <div>
+            {user?.data?.role === UserRole.RECEIVER &&
+              parcel?.currentStatus !== "DELIVERED" && (
+                <ConfirmParcel
+                  onConfirm={() =>
+                    parcel._id && handleConfirmParcel(parcel._id)
+                  }
+                >
+                  <Button
+                    variant={"destructive"}
+                    className="duration-300 transition "
+                  >
+                    Confirm Parcel
+                  </Button>
+                </ConfirmParcel>
+              )}
           </div>
         </div>
       </div>

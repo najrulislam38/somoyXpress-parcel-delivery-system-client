@@ -178,6 +178,8 @@ export default function AllParcel() {
                         to={
                           user?.data?.role === UserRole.MERCHANT
                             ? `/sender/parcel/${parcel._id}`
+                            : user?.data?.role === UserRole.RECEIVER
+                            ? `/receiver/parcel/${parcel._id}`
                             : `/admin/parcel/${parcel._id}`
                         }
                       >

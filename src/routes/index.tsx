@@ -13,6 +13,7 @@ import { withAuth } from "@/utils/withAuth";
 import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { senderSidebarItems } from "./senderSidebarItems";
+import { receiverSidebarItems } from "./receiverSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,22 @@ export const router = createBrowserRouter([
         element: <Navigate to={"/sender/analytics"} />,
       },
       ...generateRoutes(senderSidebarItems),
+    ],
+  },
+  // receiver
+  {
+    Component: withAuth(DashboardLayout, [
+      role.receiver,
+      role.superAdmin,
+      role.admin,
+    ] as TRole[]),
+    path: "/receiver",
+    children: [
+      {
+        index: true,
+        element: <Navigate to={"/receiver/profile"} />,
+      },
+      ...generateRoutes(receiverSidebarItems),
     ],
   },
 

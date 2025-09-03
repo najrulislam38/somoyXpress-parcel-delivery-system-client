@@ -50,7 +50,7 @@ export default function HeroSection() {
           </div>
 
           <div className="w-full p-5 hidden lg:block lg:w-3/5">
-            <div className="w-full banner-image-shape h-full rounded z-5 bg-[#1E93AB]"></div>
+            <div className="w-full h-full rounded z-5 bg-[#1E93AB]"></div>
             <img
               src={banner}
               alt="Hero Image"

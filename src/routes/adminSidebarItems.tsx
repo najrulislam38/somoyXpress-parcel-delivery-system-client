@@ -26,7 +26,6 @@ export const adminSidebarItems: ISidebarItem[] = [
         component: () => <AllParcel />,
       },
       {
-        title: "admin",
         url: "/admin/parcel/:id",
         component: () => <ParcelDetails />,
         hidden: true,

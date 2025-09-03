@@ -1,4 +1,6 @@
-import Analytics from "@/pages/admin/Analytics";
+import ParcelDetails from "@/components/modules/Parcel/ParcelDetails";
+import AllParcel from "@/pages/Parcel/AllParcel";
+import { Profile } from "@/pages/Receiver/Profile";
 import type { ISidebarItem } from "@/types";
 // import { lazy } from "react";
 
@@ -9,9 +11,20 @@ export const receiverSidebarItems: ISidebarItem[] = [
     title: "Parcel Tracking",
     items: [
       {
+        title: "My Profile",
+        url: "/receiver/profile",
+        component: Profile,
+      },
+
+      {
         title: "Parcel",
-        url: "/receiver/parcel",
-        component: Analytics,
+        url: "/receiver/all-parcel",
+        component: AllParcel,
+      },
+      {
+        url: "/receiver/parcel/:id",
+        component: () => <ParcelDetails />,
+        hidden: true,
       },
     ],
   },
