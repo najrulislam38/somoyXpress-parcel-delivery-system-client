@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useCancelParcelMutation,
+  useDeleteParcelMutation,
   useGetParcelDetailsQuery,
   useUpdateParcelStatusMutation,
 } from "@/redux/features/parcel/parcel.api";
@@ -14,11 +15,13 @@ import { toast } from "sonner";
 import { useUserInfoQuery } from "@/redux/features/user/user.api";
 import { UserRole } from "@/types";
 import UpdateStatus from "../Admin/UpdateStatus";
+import { DeleteParcel } from "./DeleteParcel";
 
 export default function ParcelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [cancelParcel] = useCancelParcelMutation();
+  const [deleteParcel] = useDeleteParcelMutation();
   const [updateParcelStatus] = useUpdateParcelStatusMutation();
   const { data: user } = useUserInfoQuery(undefined);
 
@@ -26,8 +29,6 @@ export default function ParcelDetails() {
   const parcel = data?.data;
 
   const handleCancel = async (id: string) => {
-    console.log(id);
-
     const toastId = toast.loading("Parcel Cancelling");
     try {
       const res = await cancelParcel(id);
@@ -43,6 +44,28 @@ export default function ParcelDetails() {
     } catch (error: any) {
       // console.log(error);
       toast.error(`Parcel Cancelled  Failed ${error.message}`, { id: toastId });
+    }
+  };
+
+  const handleDeleteParcel = async (id: string) => {
+    console.log(id);
+
+    const toastId = toast.loading("Parcel Deleting");
+    try {
+      const res = await deleteParcel(id);
+
+      console.log(res);
+
+      if (res?.data?.success) {
+        console.log(res);
+        toast.success("Parcel Deleted successfully", { id: toastId });
+        navigate(-1);
+      } else {
+        toast.error("Parcel Deleted fail", { id: toastId });
+      }
+    } catch (error: any) {
+      // console.log(error);
+      toast.error(`Parcel Deleted  Failed ${error.message}`, { id: toastId });
     }
   };
 
@@ -223,20 +246,39 @@ export default function ParcelDetails() {
             </p>
           )}
         </div>
-        <div className="my-10 flex justify-between items-center ">
-          {parcel?.currentStatus !== "CANCELLED" &&
-            parcel?.currentStatus !== "DELIVERED" &&
-            parcel?.currentStatus !== "IN_TRANSIT" &&
-            parcel?.currentStatus !== "RETURNED" &&
-            parcel?.currentStatus !== "DISPATCH" && (
-              <CancelParcel
-                onConfirm={() => parcel._id && handleCancel(parcel._id)}
-              >
-                <Button className="bg-chart-3 text-background hover:bg-chart-2 duration-300 transition ">
-                  Cancel Parcel
-                </Button>
-              </CancelParcel>
-            )}
+        <div className="my-10 flex justify-evenly items-center ">
+          <div>
+            {parcel?.currentStatus !== "CANCELLED" &&
+              parcel?.currentStatus !== "DELIVERED" &&
+              parcel?.currentStatus !== "IN_TRANSIT" &&
+              parcel?.currentStatus !== "RETURNED" &&
+              parcel?.currentStatus !== "DISPATCH" && (
+                <CancelParcel
+                  onConfirm={() => parcel._id && handleCancel(parcel._id)}
+                >
+                  <Button className="bg-chart-3 text-background hover:bg-chart-2 duration-300 transition ">
+                    Cancel Parcel
+                  </Button>
+                </CancelParcel>
+              )}
+          </div>
+          <div>
+            {parcel?.currentStatus !== "DISPATCH" &&
+              parcel?.currentStatus !== "IN_TRANSIT" &&
+              parcel?.currentStatus !== "RETURNED" &&
+              parcel?.currentStatus !== "DELIVERED" && (
+                <DeleteParcel
+                  onConfirm={() => parcel._id && handleDeleteParcel(parcel._id)}
+                >
+                  <Button
+                    variant={"destructive"}
+                    className="duration-300 transition "
+                  >
+                    Delete Parcel
+                  </Button>
+                </DeleteParcel>
+              )}
+          </div>
           <div>
             {user?.data.role === UserRole.SUPER_ADMIN ||
             user?.data?.role === UserRole.ADMIN ? (

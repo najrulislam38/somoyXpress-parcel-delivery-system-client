@@ -77,7 +77,7 @@ export default function UpdateStatus({
         <DialogTrigger asChild>
           <Button
             onClick={() => setIsModalOpen(true)}
-            className="bg-sidebar-primary hover:bg-sidebar-accent-foreground  duration-300 transition "
+            className="bg-chart-2 text-background hover:bg-chart-3 duration-300 transition"
           >
             {/* <Edit className="text-chart-3 cursor-pointer " /> */}
             Update Status
