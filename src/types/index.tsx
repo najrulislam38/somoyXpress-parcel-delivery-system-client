@@ -69,8 +69,8 @@ export type DeliveryType = {
 
 export interface IStatusLog {
   status: ParcelStatus;
-  location: string;
-  timestamp: Date;
+  location?: string;
+  timestamp?: Date;
   updatedBy?: string;
   note?: string;
 }

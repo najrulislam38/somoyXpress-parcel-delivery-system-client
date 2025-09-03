@@ -11,15 +11,15 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Button } from "@/components/ui/button";
 import { CancelParcel } from "./CancelParcel";
 import { toast } from "sonner";
-import { ParcelStatusSelector } from "../Admin/ChangeStatus";
 import { useUserInfoQuery } from "@/redux/features/user/user.api";
 import { UserRole } from "@/types";
+import UpdateStatus from "../Admin/UpdateStatus";
 
 export default function ParcelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [cancelParcel] = useCancelParcelMutation();
-  const [updateStatus] = useUpdateParcelStatusMutation();
+  const [updateParcelStatus] = useUpdateParcelStatusMutation();
   const { data: user } = useUserInfoQuery(undefined);
 
   const { data, isLoading, isError } = useGetParcelDetailsQuery(id as string);
@@ -46,13 +46,23 @@ export default function ParcelDetails() {
     }
   };
 
-  const handleStatusChange = async (newStatus: string) => {
+  const handleStatusChange = async (data: any) => {
     if (!id) return;
+    const { newStatus, note, location } = data;
 
     const toastId = toast.loading("Updating status...");
+
+    const parcelUpdateStatusInfo = {
+      status: newStatus,
+      location,
+      note,
+    };
+
     try {
-      const res = await updateStatus({ id, status: newStatus }).unwrap();
-      console.log(res);
+      const res = await updateParcelStatus({
+        id,
+        statusInfo: parcelUpdateStatusInfo,
+      }).unwrap();
 
       toast.success(`Status updated to ${res.data.currentStatus}`, {
         id: toastId,
@@ -230,9 +240,9 @@ export default function ParcelDetails() {
           <div>
             {user?.data.role === UserRole.SUPER_ADMIN ||
             user?.data?.role === UserRole.ADMIN ? (
-              <ParcelStatusSelector
-                currentStatus={parcel.currentStatus}
-                onStatusChange={handleStatusChange}
+              <UpdateStatus
+                currentStatus={parcel?.currentStatus}
+                handleStatusChange={handleStatusChange}
               />
             ) : (
               ""

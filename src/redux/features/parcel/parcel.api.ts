@@ -42,10 +42,16 @@ export const parcelApi = baseApi.injectEndpoints({
       invalidatesTags: ["PARCEL"],
     }),
     updateParcelStatus: builder.mutation({
-      query: ({ id, status }: { id: string; status: string }) => ({
+      query: ({
+        id,
+        statusInfo,
+      }: {
+        id: string;
+        statusInfo: { status: string; note?: string };
+      }) => ({
         url: `/parcels/${id}/update-status`,
         method: "PATCH",
-        data: status,
+        data: statusInfo,
       }),
       invalidatesTags: ["PARCEL"],
     }),

@@ -119,9 +119,6 @@ export function UpdateUserInfo({ userId }: { userId: string }) {
     };
 
     try {
-      // Your API call here
-      // const res = await updateUser(userId, userInfo);
-
       const res = await updateUserInfo({ id: userId, userInfo });
 
       if (res?.data?.success) {
