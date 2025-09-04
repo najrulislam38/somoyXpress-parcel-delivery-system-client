@@ -37,7 +37,18 @@ const registerSchema = z
           "Invalid Bangladeshi mobile number. Use 01XXXXXXXXX or +8801XXXXXXXXX.",
       }),
     address: z.string({ error: "Address must be submit" }),
-    password: z.string().min(8, { error: "Password must have 8 characters" }),
+    password: z
+      .string()
+      .min(8, { error: "Password must have 8 characters" })
+      .regex(/^(?=.*[A-Z])/, {
+        message: "Password must contain at least 1 uppercase letter.",
+      })
+      .regex(/^(?=.*[!@#$%^&*])/, {
+        message: "Password must contain at least 1 special character.",
+      })
+      .regex(/^(?=.*\d)/, {
+        message: "Password must contain at least 1 number.",
+      }),
     confirmPassword: z
       .string()
       .min(8, { error: "Password must have 8 characters" }),

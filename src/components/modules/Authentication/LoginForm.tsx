@@ -59,6 +59,7 @@ export function LoginForm({
       }
     } catch (error: any) {
       console.log(error);
+      toast.error(` ${error.data.message}`);
       if (error.data.message === "Password didn't matched") {
         toast.error("Invalid Password");
       }

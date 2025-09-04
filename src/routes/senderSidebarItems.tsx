@@ -1,17 +1,38 @@
-import Analytics from "@/pages/admin/Analytics";
-import type { ISidebarItem } from "@/types";
+import ParcelDetails from "@/components/modules/Parcel/ParcelDetails";
+import AllParcel from "@/pages/Parcel/AllParcel";
+import CreateParcel from "@/pages/Parcel/CreateParcel";
+import { Profile } from "@/pages/Receiver/Profile";
+
+import { UserRole, type ISidebarItem } from "@/types";
 // import { lazy } from "react";
 
 // const Analytics = lazy(() => import("@/pages/admin/Analytics"));
 
 export const senderSidebarItems: ISidebarItem[] = [
   {
-    title: "Dashboard",
+    title: "Sender Dashboard",
     items: [
       {
-        title: "Analytics",
-        url: "/admin/analytics",
-        component: Analytics,
+        title: "My Profile",
+        url: "/sender/profile",
+        component: Profile,
+        role: [UserRole.MERCHANT],
+      },
+      {
+        title: "Create Parcel",
+        url: "/sender/create-parcel",
+        component: CreateParcel,
+      },
+      {
+        title: "My All Parcel",
+        url: "/sender/all-parcel",
+        component: AllParcel,
+        role: [UserRole.MERCHANT],
+      },
+      {
+        url: "/sender/parcel/:id",
+        component: ParcelDetails,
+        hidden: true,
       },
     ],
   },

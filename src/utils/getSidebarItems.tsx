@@ -22,7 +22,7 @@ export const getSidebarItems = (UserRole: TRole) => {
     case role.sender:
       return [...senderSidebarItems];
     case role.receiver:
-      return [...senderSidebarItems];
+      return [...receiverSidebarItems];
     default:
       return [];
   }

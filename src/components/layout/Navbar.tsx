@@ -14,9 +14,10 @@ import {
 import { ModeToggler } from "./ModeToggler";
 import { Link } from "react-router";
 import Logo from "../ui/logo";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+
 import React from "react";
 import { role } from "@/constants/role";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -27,7 +28,7 @@ const navigationLinks = [
   { href: "/admin", label: "dashboard", role: role.admin },
   { href: "/admin", label: "dashboard", role: role.superAdmin },
   { href: "/sender", label: "dashboard", role: role.sender },
-  { href: "/user", label: "dashboard", role: role.receiver },
+  { href: "/receiver", label: "dashboard", role: role.receiver },
 ];
 
 export default function Navbar() {
@@ -107,9 +108,9 @@ export default function Navbar() {
             </Popover>
             {/* Main nav */}
             <div className="flex items-center gap-6">
-              <a href="/" className="text-primary hover:text-primary/90">
+              <Link to="/" className="text-primary hover:text-primary/90">
                 <Logo />
-              </a>
+              </Link>
               {/* Navigation menu */}
               <NavigationMenu className="max-md:hidden">
                 <NavigationMenuList className="gap-2">
