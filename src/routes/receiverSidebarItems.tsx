@@ -2,7 +2,7 @@ import ParcelDetails from "@/components/modules/Parcel/ParcelDetails";
 import IncomingParcel from "@/pages/Receiver/IncomingParcel";
 import { ParcelTracker } from "@/pages/Receiver/ParcelTracking";
 import { Profile } from "@/pages/Receiver/Profile";
-import type { ISidebarItem } from "@/types";
+import { UserRole, type ISidebarItem } from "@/types";
 // import { lazy } from "react";
 
 // const Analytics = lazy(() => import("@/pages/admin/Analytics"));
@@ -20,6 +20,7 @@ export const receiverSidebarItems: ISidebarItem[] = [
         title: "All Parcel",
         url: "/receiver/parcels",
         component: IncomingParcel,
+        role: [UserRole.RECEIVER],
       },
       {
         title: "Parcel Tracker",

@@ -17,6 +17,7 @@ import Logo from "./ui/logo";
 import { getSidebarItems } from "@/utils/getSidebarItems";
 import { Link } from "react-router";
 import { useUserInfoQuery } from "@/redux/features/user/user.api";
+import type { UserRole } from "@/types";
 
 // This is sample data.
 
@@ -45,6 +46,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenu>
                 {item.items
                   .filter((item) => !item.hidden)
+                  .filter(
+                    (item) =>
+                      !item.role ||
+                      item.role.includes(userData?.data?.role as UserRole)
+                  )
                   .map((item, index) => (
                     <SidebarMenuItem key={index}>
                       <SidebarMenuButton asChild>

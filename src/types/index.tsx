@@ -11,6 +11,7 @@ export interface ISidebarItem {
     url: string;
     component: ComponentType;
     hidden?: boolean;
+    role?: UserRole[];
   }[];
 }
 
