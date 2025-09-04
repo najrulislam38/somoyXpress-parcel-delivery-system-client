@@ -1,5 +1,5 @@
 import ParcelDetails from "@/components/modules/Parcel/ParcelDetails";
-import AllParcel from "@/pages/Parcel/AllParcel";
+import IncomingParcel from "@/pages/Receiver/IncomingParcel";
 import { ParcelTracker } from "@/pages/Receiver/ParcelTracking";
 import { Profile } from "@/pages/Receiver/Profile";
 import type { ISidebarItem } from "@/types";
@@ -16,11 +16,10 @@ export const receiverSidebarItems: ISidebarItem[] = [
         url: "/receiver/profile",
         component: Profile,
       },
-
       {
-        title: "Parcel",
-        url: "/receiver/all-parcel",
-        component: AllParcel,
+        title: "All Parcel",
+        url: "/receiver/parcels",
+        component: IncomingParcel,
       },
       {
         title: "Parcel Tracker",
