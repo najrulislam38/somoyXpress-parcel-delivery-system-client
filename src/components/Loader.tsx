@@ -40,7 +40,7 @@ export function UserTableSkeleton({ rows = 5 }) {
               "Phone",
               "Address",
               "Action",
-            ].map((header, idx) => (
+            ].map((_header, idx) => (
               <th key={idx} className="p-2">
                 <Skeleton height={20} width={80} />
               </th>
