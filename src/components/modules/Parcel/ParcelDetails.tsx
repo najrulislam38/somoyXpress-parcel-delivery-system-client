@@ -35,16 +35,12 @@ export default function ParcelDetails() {
     try {
       const res = await cancelParcel(id);
 
-      console.log(res);
-
       if (res?.data?.success) {
-        console.log(res);
         toast.success("Parcel Cancelled successfully", { id: toastId });
       } else {
         toast.error("Parcel Cancelled fail", { id: toastId });
       }
     } catch (error: any) {
-      // console.log(error);
       toast.error(`Parcel Cancelled  Failed ${error.message}`, { id: toastId });
     }
   };
@@ -54,38 +50,28 @@ export default function ParcelDetails() {
     try {
       const res = await confirmParcel(id);
 
-      console.log(res);
-
       if (res?.data?.success) {
-        console.log(res);
         toast.success("Parcel Received successfully", { id: toastId });
       } else {
         toast.error("Parcel Received fail", { id: toastId });
       }
     } catch (error: any) {
-      // console.log(error);
       toast.error(`Parcel Received  Failed ${error.message}`, { id: toastId });
     }
   };
 
   const handleDeleteParcel = async (id: string) => {
-    console.log(id);
-
     const toastId = toast.loading("Parcel Deleting");
     try {
       const res = await deleteParcel(id);
 
-      console.log(res);
-
       if (res?.data?.success) {
-        console.log(res);
         toast.success("Parcel Deleted successfully", { id: toastId });
         navigate(-1);
       } else {
         toast.error("Parcel Deleted fail", { id: toastId });
       }
     } catch (error: any) {
-      // console.log(error);
       toast.error(`Parcel Deleted  Failed ${error.message}`, { id: toastId });
     }
   };
