@@ -80,8 +80,6 @@ export function ParcelTracker() {
     skip: !trackingId,
   });
 
-  console.log(parcel);
-
   function onSubmit(values: z.infer<typeof formSchema>) {
     setTrackingId(values.trackingId);
   }

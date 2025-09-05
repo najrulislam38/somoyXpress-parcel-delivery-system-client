@@ -97,13 +97,6 @@ export function UpdateUserInfo({ userId }: { userId: string }) {
     }
   }, [user, form, isModalOpen]);
 
-  // Debug: log form errors
-  //   useEffect(() => {
-  //     if (Object.keys(form.formState.errors).length > 0) {
-  //       console.log("Form validation errors:", form.formState.errors);
-  //     }
-  //   }, [form.formState.errors]);
-
   const onSubmit = async (data: z.infer<typeof userZodSchema>) => {
     const toastId = toast.loading("Users data updating");
     const userInfo = {
@@ -122,7 +115,6 @@ export function UpdateUserInfo({ userId }: { userId: string }) {
       const res = await updateUserInfo({ id: userId, userInfo });
 
       if (res?.data?.success) {
-        console.log(res);
         toast.success("Users Data Updated", { id: toastId });
         setIsModalOpen(false);
         form.reset();

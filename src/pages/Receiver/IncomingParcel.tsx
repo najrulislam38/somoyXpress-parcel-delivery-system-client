@@ -37,7 +37,7 @@ export default function IncomingParcel() {
 
   return (
     <>
-      {parcels?.length < 1 ? (
+      {!isLoading && parcels?.length < 1 ? (
         <div>
           <h1 className="text-xl md:text-2xl font-medium text-center">
             No Parcel available

@@ -48,11 +48,10 @@ export function LoginForm({
       email: data.email,
       password: data.password,
     };
-    // console.log(userInfo);
 
     try {
       const result = await login(userInfo).unwrap();
-      // console.log(result);
+
       if (result.success) {
         toast.success("Login successful.");
         navigate("/");
