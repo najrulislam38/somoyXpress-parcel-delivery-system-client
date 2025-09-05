@@ -14,11 +14,14 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { senderSidebarItems } from "./senderSidebarItems";
 import { receiverSidebarItems } from "./receiverSidebarItems";
+import ErrorPage from "@/pages/ErrorPage";
+import Unauthorized from "@/pages/Unauthorized";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: App,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -94,6 +97,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/unauthorized",
-    Component: Register,
+    Component: Unauthorized,
   },
 ]);

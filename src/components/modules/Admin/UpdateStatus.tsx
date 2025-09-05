@@ -62,8 +62,6 @@ export default function UpdateStatus({
   });
 
   const onSubmit = (data: any) => {
-    // console.log(data);
-
     const { newStatus } = data;
 
     setStatus(newStatus);

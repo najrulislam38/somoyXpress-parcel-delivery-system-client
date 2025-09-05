@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteConfirmation } from "@/components/Deleteconfirmation";
 import { UpdateUserInfo } from "@/components/modules/Admin/UpdateUserModel";
 import { Button } from "@/components/ui/button";
@@ -64,13 +65,12 @@ export default function AllUsers({ loading }: PostProps) {
       const res = await deleteUser({ id: id });
 
       if (res?.data?.success) {
-        console.log(res);
         toast.success("User Deleted successfully", { id: toastId });
       } else {
         toast.error("Users Deleted Failed", { id: toastId });
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(`Users Deleted Failed ${error?.message}`, { id: toastId });
     }
   };
 
