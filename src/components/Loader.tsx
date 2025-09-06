@@ -13,7 +13,7 @@ export default function Loader() {
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
       <div className="text-center">
         <CircleLoader
-          color="#FE3566" // Tailwind's blue-500
+          color="#FE3566"
           loading={true}
           cssOverride={override}
           size={50}
