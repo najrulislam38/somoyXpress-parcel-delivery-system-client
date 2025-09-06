@@ -303,6 +303,8 @@ export default function ParcelDetails() {
           {/* Confirm Parcel for Receiver */}
           <div>
             {user?.data?.role === UserRole.RECEIVER &&
+              parcel?.currentStatus !== "CANCELLED" &&
+              parcel?.currentStatus !== "RETURNED" &&
               parcel?.currentStatus !== "DELIVERED" && (
                 <ConfirmParcel
                   onConfirm={() =>
