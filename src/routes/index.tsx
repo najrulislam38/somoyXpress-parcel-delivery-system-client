@@ -16,6 +16,8 @@ import { senderSidebarItems } from "./senderSidebarItems";
 import { receiverSidebarItems } from "./receiverSidebarItems";
 import ErrorPage from "@/pages/ErrorPage";
 import Unauthorized from "@/pages/Unauthorized";
+import ReceiverLogin from "@/pages/ReceiverLogin";
+import ReceiverRegister from "@/pages/ReceiverRegister";
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +96,14 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     Component: Register,
+  },
+  {
+    path: "/receiver/login",
+    Component: ReceiverLogin,
+  },
+  {
+    path: "/receiver/register",
+    Component: ReceiverRegister,
   },
   {
     path: "/unauthorized",
