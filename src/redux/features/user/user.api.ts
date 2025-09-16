@@ -1,7 +1,7 @@
 import { baseApi } from "@/redux/baseApi";
 import type { IUser } from "@/types";
 
-export const authApi = baseApi.injectEndpoints({
+export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     singleUserInfo: builder.query({
       query: (userId) => ({
@@ -60,4 +60,4 @@ export const {
   useGetAllReceiverQuery,
   useUpdateUserInfoMutation,
   useDeleteUserMutation,
-} = authApi;
+} = userApi;
