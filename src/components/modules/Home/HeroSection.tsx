@@ -34,7 +34,7 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="bg-accent min-h-screen">
+    <div className="bg-destructive min-h-screen">
       <div className="container mx-auto">
         <div className="w-full lg:flex items-center justify-between gap-10 px-6">
           {/* Left Section */}

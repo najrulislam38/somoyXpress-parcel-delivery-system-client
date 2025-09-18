@@ -67,7 +67,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="bg-primary/5 py-16 lg:py-20">
+    <section className="bg-accent py-16 lg:py-20">
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-3xl font-semibold text-center text-foreground mb-10">
           Send Us a Message

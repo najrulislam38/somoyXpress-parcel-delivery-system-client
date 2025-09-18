@@ -9,7 +9,7 @@ import { UserRole, type ISidebarItem } from "@/types";
 
 export const receiverSidebarItems: ISidebarItem[] = [
   {
-    title: "Parcel Tracking",
+    title: "Receiver Dashboard",
     items: [
       {
         title: "My Profile",

@@ -10,14 +10,14 @@ export const getSidebarItems = (UserRole: TRole) => {
     case role.superAdmin:
       return [
         ...adminSidebarItems,
-        ...senderSidebarItems,
-        ...receiverSidebarItems,
+        // ...senderSidebarItems,
+        // ...receiverSidebarItems,
       ];
     case role.admin:
       return [
         ...adminSidebarItems,
-        ...senderSidebarItems,
-        ...receiverSidebarItems,
+        // ...senderSidebarItems,
+        // ...receiverSidebarItems,
       ];
     case role.sender:
       return [...senderSidebarItems];

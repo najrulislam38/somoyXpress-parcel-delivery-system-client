@@ -2,7 +2,7 @@
 
 A secure, role-based, and user-friendly **Parcel Delivery System Frontend** built with **React.js, Redux Toolkit, RTK Query, and Tailwind CSS**.  
 This application provides Senders, Receivers, and Admins a seamless interface to manage parcel deliveries, track shipments, and perform role-specific operations.  
-It consumes the backend [Parcel Delivery API](https://github.com/najrulislam38/SomoyXpress-Courier) (Node.js + Express + MongoDB).
+It consumes the backend [Parcel Delivery API](https://github.com/najrulislam38/SomoyXpress-Courier) (Node.js + Express + MongoDB + Mongoose).
 
 ---
 

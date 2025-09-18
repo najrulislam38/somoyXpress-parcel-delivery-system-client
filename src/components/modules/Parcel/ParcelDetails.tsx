@@ -280,7 +280,7 @@ export default function ParcelDetails() {
                   onConfirm={() => parcel._id && handleDeleteParcel(parcel._id)}
                 >
                   <Button
-                    variant={"destructive"}
+                    variant={"default"}
                     className="duration-300 transition "
                   >
                     Delete Parcel
