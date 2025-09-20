@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -20,8 +20,12 @@ import Password from "@/components/ui/Password";
 
 import icon from "./../../../assets/icons/web-icon.png";
 import { Lock, Mail } from "lucide-react";
-import { useLoginMutation } from "@/redux/features/auth/auth.api";
+import {
+  useAgentLoginMutation,
+  useLoginMutation,
+} from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import { UserRole } from "@/types";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -33,7 +37,10 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   const [login] = useLoginMutation();
+  const [agentLogin] = useAgentLoginMutation();
+
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -47,10 +54,17 @@ export function LoginForm({
     const userInfo = {
       email: data.email,
       password: data.password,
+      role:
+        pathname === "/agent/login"
+          ? UserRole.RECEIVER || UserRole.ADMIN || UserRole.SUPER_ADMIN
+          : UserRole.MERCHANT || UserRole.ADMIN || UserRole.SUPER_ADMIN,
     };
 
     try {
-      const result = await login(userInfo).unwrap();
+      const result =
+        pathname === "/agent/login"
+          ? await agentLogin(userInfo).unwrap()
+          : await login(userInfo).unwrap();
 
       if (result.success) {
         toast.success("Login successful.");
@@ -80,9 +94,11 @@ export function LoginForm({
         <div className="w-16 bg-chart-2 rounded-full p-3">
           <img src={icon} alt="" className="w-full" loading="lazy" />
         </div>
-        <h1 className="text-2xl font-bold mt-4">Merchant Login</h1>
+        <h1 className="text-2xl font-bold mt-4">
+          {pathname === "/login" ? "Merchant Login" : "Agent Login"}
+        </h1>
         <p className="text-muted-foreground text-sm text-balance">
-          Enter your email below to login to your account
+          Enter your Agent email below to login to your account
         </p>
       </div>
       <div className="grid gap-6">
@@ -151,14 +167,41 @@ export function LoginForm({
           </form>
         </Form>
       </div>
-      <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link
-          to={"/register"}
-          className="underline underline-offset-4 text-primary"
-        >
-          Sign up
-        </Link>
+      {pathname === "/login" ? (
+        <div className="text-center text-sm">
+          Don&apos;t have a Merchant account?{" "}
+          <Link
+            to={"/register"}
+            className="hover:underline underline-offset-4 text-primary font-medium"
+          >
+            Be A Merchant
+          </Link>
+        </div>
+      ) : (
+        <div className="text-center text-sm">
+          Don&apos;t have an Agent account?{" "}
+          <Link
+            to={"/agent/register"}
+            className="hover:underline underline-offset-4 text-primary font-medium"
+          >
+            Be a Agent
+          </Link>
+        </div>
+      )}
+      <div className="text-center mt-5">
+        {pathname !== "/agent/login" ? (
+          <Link to={"/agent/login"}>
+            <Button className=" bg-chart-2 hover:bg-chart-3 transition duration-300">
+              Agent Login
+            </Button>
+          </Link>
+        ) : (
+          <Link to={"/login"}>
+            <Button className=" bg-chart-2 hover:bg-chart-3 transition duration-300">
+              Merchant Login
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );
