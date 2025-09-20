@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -26,6 +26,7 @@ import {
 } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
 import { UserRole } from "@/types";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -38,6 +39,8 @@ export function LoginForm({
 }: React.ComponentProps<"form">) {
   const [login] = useLoginMutation();
   const [agentLogin] = useAgentLoginMutation();
+
+  const { data: user } = useUserInfoQuery(undefined);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -55,14 +58,14 @@ export function LoginForm({
       email: data.email,
       password: data.password,
       role:
-        pathname === "/agent/login"
+        pathname === "/login/agent"
           ? UserRole.RECEIVER || UserRole.ADMIN || UserRole.SUPER_ADMIN
           : UserRole.MERCHANT || UserRole.ADMIN || UserRole.SUPER_ADMIN,
     };
 
     try {
       const result =
-        pathname === "/agent/login"
+        pathname === "/login/agent"
           ? await agentLogin(userInfo).unwrap()
           : await login(userInfo).unwrap();
 
@@ -82,6 +85,10 @@ export function LoginForm({
       }
     }
   };
+
+  if (user) {
+    return <Navigate to={"/"} replace />;
+  }
 
   return (
     <div
@@ -181,7 +188,7 @@ export function LoginForm({
         <div className="text-center text-sm">
           Don&apos;t have an Agent account?{" "}
           <Link
-            to={"/agent/register"}
+            to={"/register/agent"}
             className="hover:underline underline-offset-4 text-primary font-medium"
           >
             Be a Agent
@@ -189,16 +196,16 @@ export function LoginForm({
         </div>
       )}
       <div className="text-center mt-5">
-        {pathname !== "/agent/login" ? (
-          <Link to={"/agent/login"}>
+        {pathname !== "/login/agent" ? (
+          <Link to={"/login/agent"}>
             <Button className=" bg-chart-2 hover:bg-chart-3 transition duration-300">
-              Agent Login
+              Agent Account Login
             </Button>
           </Link>
         ) : (
           <Link to={"/login"}>
             <Button className=" bg-chart-2 hover:bg-chart-3 transition duration-300">
-              Merchant Login
+              Merchant Account Login
             </Button>
           </Link>
         )}

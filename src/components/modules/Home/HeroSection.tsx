@@ -86,7 +86,7 @@ export default function HeroSection() {
 
                 <motion.div variants={buttonVariants} whileHover="hover">
                   <Button className="bg-accent-foreground uppercase py-6 pl-2 hover:bg-accent-foreground/90 transition-all group pr-5 dark:text-black w-fit">
-                    <Link to={"/login"} className="flex gap-1">
+                    <Link to={"/login/agent"} className="flex gap-1">
                       <span>Earn With Us</span>
                       <LogIn className="transition-all duration-500 group-hover:ml-3" />
                     </Link>

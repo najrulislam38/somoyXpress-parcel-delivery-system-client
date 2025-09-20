@@ -16,12 +16,13 @@ import { z } from "zod";
 import icon from "./../../../assets/icons/web-icon.png";
 import { useForm } from "react-hook-form";
 import Password from "@/components/ui/Password";
-import { Link, useNavigate } from "react-router";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { UserRole } from "@/types";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 const registerSchema = z
   .object({
@@ -64,6 +65,8 @@ export default function RegisterForm({
 }: React.ComponentProps<"form">) {
   const [register] = useRegisterMutation();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { data: user } = useUserInfoQuery(undefined);
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -84,15 +87,22 @@ export default function RegisterForm({
       phone: data.phone,
       address: data.address,
       password: data.password,
-      role: UserRole.MERCHANT,
+      role:
+        pathname === "/register/agent" ? UserRole.RECEIVER : UserRole.MERCHANT,
     };
+
+    console.log(userInfo);
 
     try {
       const result = await register(userInfo).unwrap();
 
       if (result.success) {
-        toast.success("Login successful.");
-        navigate("/login");
+        toast.success("Register successfully.");
+        if (pathname === "/register/agent") {
+          navigate("/login/agent");
+        } else {
+          navigate("/login");
+        }
       }
     } catch (error: any) {
       console.log(error);
@@ -105,6 +115,11 @@ export default function RegisterForm({
       }
     }
   };
+
+  if (user) {
+    return <Navigate to={"/"} replace />;
+  }
+
   return (
     <div
       className={cn(" max-w-[400px] mx-auto flex flex-col gap-6", className)}
@@ -113,9 +128,14 @@ export default function RegisterForm({
         <div className="w-16 bg-chart-2 rounded-full p-3">
           <img src={icon} alt="" className="w-full" loading="lazy" />
         </div>
-        <h1 className="text-2xl font-bold">Merchant Registration </h1>
+        <h1 className="text-2xl font-bold">
+          {pathname === "/register"
+            ? "Merchant Registration "
+            : "Agent Registration"}
+        </h1>
         <p className="text-muted-foreground text-sm text-balance">
-          Enter your information to create your account
+          Enter your information to create your{" "}
+          {pathname === "/register" ? "Merchant" : "Agent"} account
         </p>
       </div>
       <div className="grid gap-6">
@@ -276,14 +296,41 @@ export default function RegisterForm({
           </form>
         </Form>
       </div>
-      <div className="text-center text-sm">
-        Already have an account?{" "}
-        <Link
-          to={"/login"}
-          className="underline font-semibold text-primary underline-offset-4"
-        >
-          Sign In
-        </Link>
+      {pathname === "/register/agent" ? (
+        <div className="text-center text-sm">
+          Already have an Agent account?{" "}
+          <Link
+            to={"/login/agent"}
+            className="hover:underline font-semibold text-primary underline-offset-4"
+          >
+            Sign In
+          </Link>
+        </div>
+      ) : (
+        <div className="text-center text-sm">
+          Already have a Merchant account?{" "}
+          <Link
+            to={"/login"}
+            className="underline font-semibold text-primary underline-offset-4"
+          >
+            Sign In
+          </Link>
+        </div>
+      )}
+      <div className="text-center mt-5">
+        {pathname !== "/register/agent" ? (
+          <Link to={"/register/agent"}>
+            <Button className=" bg-chart-2 hover:bg-chart-3 transition duration-300">
+              Be A Agent
+            </Button>
+          </Link>
+        ) : (
+          <Link to={"/register"}>
+            <Button className=" bg-chart-2 hover:bg-chart-3 transition duration-300">
+              Be a Merchant
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );
