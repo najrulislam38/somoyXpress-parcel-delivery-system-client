@@ -1,4 +1,3 @@
-import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -63,7 +62,7 @@ export function UpdateUserInfo({ userId }: { userId: string }) {
 
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
-  const { data: user, isLoading, isError } = useSingleUserInfoQuery(userId);
+  const { data: user, isError } = useSingleUserInfoQuery(userId);
 
   const form = useForm<z.infer<typeof userZodSchema>>({
     resolver: zodResolver(userZodSchema),
@@ -130,7 +129,7 @@ export function UpdateUserInfo({ userId }: { userId: string }) {
     }
   };
 
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
   if (isError) return <p>Failed to load user data</p>;
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -256,32 +255,6 @@ export function UpdateUserInfo({ userId }: { userId: string }) {
                     </FormItem>
                   )}
                 />
-                {/* <FormField
-                    control={form.control}
-                    name="role"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormLabel>Role</FormLabel>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Select role" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="SENDER">SENDER</SelectItem>
-                              <SelectItem value="RECEIVER">RECEIVER</SelectItem>
-                              <SelectItem value="ADMIN">ADMIN</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
               </div>
               <div className=" md:flex gap-10">
                 <FormField

@@ -98,11 +98,11 @@ export const router = createBrowserRouter([
     Component: Register,
   },
   {
-    path: "/receiver/login",
+    path: "/login/agent",
     Component: ReceiverLogin,
   },
   {
-    path: "/receiver/register",
+    path: "/register/agent",
     Component: ReceiverRegister,
   },
   {

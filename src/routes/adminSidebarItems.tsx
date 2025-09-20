@@ -1,5 +1,7 @@
 import ParcelDetails from "@/components/modules/Parcel/ParcelDetails";
 import AllParcel from "@/pages/Parcel/AllParcel";
+import CreateParcel from "@/pages/Parcel/CreateParcel";
+import { ParcelTracker } from "@/pages/Receiver/ParcelTracking";
 import AllUsers from "@/pages/admin/AllUsers";
 import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
@@ -26,9 +28,19 @@ export const adminSidebarItems: ISidebarItem[] = [
         component: () => <AllParcel />,
       },
       {
+        title: "Create Parcel",
+        url: "/admin/create-parcel",
+        component: CreateParcel,
+      },
+      {
         url: "/admin/parcel/:id",
         component: () => <ParcelDetails />,
         hidden: true,
+      },
+      {
+        title: "Parcel Tracker",
+        url: "/admin/tracker",
+        component: ParcelTracker,
       },
     ],
   },

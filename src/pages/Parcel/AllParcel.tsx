@@ -8,13 +8,31 @@ import { Link } from "react-router";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useUserInfoQuery } from "@/redux/features/user/user.api";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function AllParcel() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limit] = useState(6);
+  const [status, setStatus] = useState<string | undefined>(undefined);
+
   const { data: user } = useUserInfoQuery(undefined);
-  const { data, isLoading, isError } = useGetAllParcelQuery(undefined);
+  const { data, isLoading, isError } = useGetAllParcelQuery({
+    page: currentPage,
+    limit,
+    currentStatus: status,
+  });
   const parcels = data?.data || [];
 
   const [filterStatus, setFilterStatus] = useState<ParcelStatus | "ALL">("ALL");
+
+  const totalPage = data?.meta?.totalPage || 1;
 
   const filteredParcels =
     filterStatus === "ALL"
@@ -36,7 +54,36 @@ export default function AllParcel() {
   }
 
   return (
-    <>
+    <div>
+      <div className="mb-6 gap-4">
+        {/* <h2 className="text-2xl font-bold">
+              Total Parcels:{" "}
+              <span className="text-primary">
+                {isLoading ? <Skeleton width={30} /> : parcels.length}
+              </span>
+            </h2> */}
+
+        <div className="flex items-center gap-2">
+          <label className="font-medium">Filter by Status:</label>
+          <select
+            className="border border-gray-300 dark:bg-accent dark:text-white rounded-md px-3 py-1"
+            value={filterStatus}
+            onChange={(e) => {
+              setFilterStatus(e.target.value as ParcelStatus | "ALL");
+              setStatus(e.target.value === "ALL" ? undefined : e.target.value);
+              setCurrentPage(1);
+            }}
+            disabled={isLoading}
+          >
+            <option value="ALL">All</option>
+            {Object.keys(statusColors).map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       {!isLoading && parcels?.length < 1 ? (
         <div>
           <h1 className="text-xl md:text-2xl font-medium text-center">
@@ -45,34 +92,6 @@ export default function AllParcel() {
         </div>
       ) : (
         <div className="p-6">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-            <h2 className="text-2xl font-bold">
-              Total Parcels:{" "}
-              <span className="text-primary">
-                {isLoading ? <Skeleton width={30} /> : parcels.length}
-              </span>
-            </h2>
-
-            <div className="flex items-center gap-2">
-              <label className="font-medium">Filter by Status:</label>
-              <select
-                className="border border-gray-300 dark:bg-accent dark:text-white rounded-md px-3 py-1"
-                value={filterStatus}
-                onChange={(e) =>
-                  setFilterStatus(e.target.value as ParcelStatus | "ALL")
-                }
-                disabled={isLoading}
-              >
-                <option value="ALL">All</option>
-                {Object.keys(statusColors).map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {isLoading
               ? Array.from({ length: 6 }).map((_, idx) => (
@@ -191,6 +210,51 @@ export default function AllParcel() {
           </div>
         </div>
       )}
-    </>
+      {totalPage > 1 && (
+        <div className="mt-8">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                  className={
+                    currentPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
+
+              {Array.from({ length: totalPage }, (_, index) => index + 1).map(
+                (page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      isActive={currentPage === page}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              )}
+
+              {/* <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem> */}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                  className={
+                    currentPage === totalPage
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
+    </div>
   );
 }

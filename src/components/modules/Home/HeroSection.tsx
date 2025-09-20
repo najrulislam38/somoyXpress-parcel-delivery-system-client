@@ -34,7 +34,7 @@ export default function HeroSection() {
   };
 
   return (
-    <div className="bg-accent min-h-screen">
+    <div className="bg-destructive min-h-screen">
       <div className="container mx-auto">
         <div className="w-full lg:flex items-center justify-between gap-10 px-6">
           {/* Left Section */}
@@ -86,7 +86,7 @@ export default function HeroSection() {
 
                 <motion.div variants={buttonVariants} whileHover="hover">
                   <Button className="bg-accent-foreground uppercase py-6 pl-2 hover:bg-accent-foreground/90 transition-all group pr-5 dark:text-black w-fit">
-                    <Link to={"/login"} className="flex gap-1">
+                    <Link to={"/login/agent"} className="flex gap-1">
                       <span>Earn With Us</span>
                       <LogIn className="transition-all duration-500 group-hover:ml-3" />
                     </Link>
